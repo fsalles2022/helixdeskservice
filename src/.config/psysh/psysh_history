@@ -1,0 +1,6 @@
+>>> App\Models\FailedEvent::all();
+App\Models\FailedEvent::all();
+App\Models\FailedEvent::all();
+App\Models\FailedEvent::all();
+App\Models\FailedEvent::all();
+App\Models\FailedEvent::all();
