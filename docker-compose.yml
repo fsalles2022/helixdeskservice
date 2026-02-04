@@ -1,0 +1,66 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: ./docker/php
+    container_name: helixdesk_app
+    volumes:
+      - ./src:/var/www
+    depends_on:
+      - mysql
+      - redis
+      - rabbitmq
+    networks:
+      - helixnet
+
+  nginx:
+    image: nginx:alpine
+    container_name: helixdesk_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - helixnet
+
+  mysql:
+    image: mysql:8.0
+    container_name: helixdesk_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: helixdesk
+      MYSQL_USER: helix
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - helixnet
+
+  redis:
+    image: redis:alpine
+    container_name: helixdesk_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - helixnet
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: helixdesk_rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - helixnet
+
+networks:
+  helixnet:
+
+volumes:
+  mysql_data:

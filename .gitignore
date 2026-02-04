@@ -1,0 +1,10 @@
+# Docker
+docker/.env
+*.log
+
+# Node / vendor (se quiser ignorar)
+src/vendor/
+src/node_modules/
+
+# Env
+src/.env
