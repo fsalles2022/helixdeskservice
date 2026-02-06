@@ -89,5 +89,5 @@ async function loadCharts() {
 // Iniciar quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
     loadCharts();
-    setInterval(loadCharts, 30000); // Atualiza a cada 30s
+    setInterval(loadCharts, 15000); // Atualiza a cada 15s
 });
