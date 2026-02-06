@@ -16,3 +16,29 @@ App\Models\FailedEvent::all();
 \App\Models\FailedEvent::truncate();
 \App\Models\FailedEvent::truncate();
 \App\Models\FailedEvent::truncate();
+\App\Models\FailedEvent::truncate();
+\App\Models\FailedEvent::truncate();
+\App\Models\FailedEvent::truncate();
+\App\Models\FailedEvent::truncate();
+\App\Models\FailedEvent::
+\App\Models\FailedEvent::all();
+\App\Models\FailedEvent::truncate();
+\App\Models\FailedEvent::all();
+\App\Models\FailedEvent::truncate();
+\App\Models\FailedEvent::all();
+App\Models\FailedEvent::create([
+    'routing_key' => 'ticket.created',
+    'payload' => json_encode(['ticket_id' => 123, 'status' => 'failed']),
+    'error' => 'Simulated error after migration',
+    'attempts' => 1
+]);
+\App\Models\FailedEvent::all();
+DB::connection()->getPdo();
+DB::connection()->getPdo();
+\App\Models\FailedEvent::all();
+\App\Models\FailedEvent::all();
+\App\Models\FailedEvent::truncate();
+\App\Models\FailedEvent::truncate();
+\App\Models\FailedEvent::truncate();
+\App\Models\FailedEvent::truncate();
+\App\Models\FailedEvent::truncate();
