@@ -39,7 +39,7 @@ class FailedEventController extends Controller
         }
 
         return response()->json(
-            $query->orderByDesc('created_at')->paginate(10)
+            $query->orderByDesc('created_at')->paginate(5)
         );
     }
 

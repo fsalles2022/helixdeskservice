@@ -11,7 +11,7 @@ use App\Models\FailedEvent;
 class TicketCreatedWorker extends Command
 {
     protected $signature = 'worker:ticket-created';
-    protected $description = 'Consume ticket.created events with retry + DLQ';
+    protected $description = 'Consume ticket.bug.at.userdata events with retry + DLQ';
 
     public function handle()
     {
@@ -55,10 +55,10 @@ class TicketCreatedWorker extends Command
             ])
         );
 
-        $channel->queue_bind('notify.queue', 'tickets.events', 'ticket.created');
-        $channel->queue_bind('retry.queue', 'tickets.retry', 'ticket.created');
+        $channel->queue_bind('notify.queue', 'tickets.events', 'ticket.bug.at.userdata');
+        $channel->queue_bind('retry.queue', 'tickets.retry', 'ticket.bug.at.userdata');
 
-        $this->info('🟢 Waiting for ticket.created events...');
+        $this->info('🟢 Waiting for ticket.bug.at.userdata events...');
 
         $channel->basic_consume(
             'notify.queue',
@@ -103,13 +103,13 @@ class TicketCreatedWorker extends Command
                                 ]
                             ),
                             'tickets.retry',
-                            'ticket.created'
+                            'ticket.bug.at.userdata'
                         );
                     } else {
                         $this->warn("☠️ Saved to DLQ");
 
                         FailedEvent::create([
-                            'routing_key' => 'ticket.created',
+                            'routing_key' => 'ticket.bug.at.userdata',
                             'payload' => json_encode($data ?? ['raw' => $msg->body]),
                             'error' => $e->getMessage(),
                             'attempts' => $attempts
