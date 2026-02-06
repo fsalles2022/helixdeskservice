@@ -9,4 +9,3 @@ Route::get('/', function () {
 use App\Http\Controllers\FailedEventController;
 
 Route::get('/admin/dlq', [FailedEventController::class, 'page'])->name('dlq.page');
-

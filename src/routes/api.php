@@ -1,13 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
-use App\Messaging\RabbitPublisher;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FailedEventController;
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+use App\Messaging\RabbitPublisher;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/test-event', function (RabbitPublisher $publisher) {
     $publisher->publish('tickets.events', 'ticket.created', [
@@ -18,6 +14,10 @@ Route::post('/test-event', function (RabbitPublisher $publisher) {
 
     return ['status' => 'event published'];
 });
-Route::get('/failed-events', [FailedEventController::class, 'index']);
-Route::post('/failed-events/{id}/retry', [FailedEventController::class, 'retry']);
-Route::delete('/failed-events/{id}', [FailedEventController::class, 'destroy']);
+
+Route::prefix('failed-events')->group(function () {
+    Route::get('/', [FailedEventController::class, 'index']);
+    Route::get('/stats', [FailedEventController::class, 'stats']);
+    Route::post('/{id}/retry', [FailedEventController::class, 'retry']);
+    Route::delete('/{id}', [FailedEventController::class, 'destroy']);
+});

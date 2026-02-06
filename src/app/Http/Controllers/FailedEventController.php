@@ -22,29 +22,44 @@ class FailedEventController extends Controller
      * Lista os eventos falhos (API)
      * Ajustado para 10 itens por página conforme pedido no layout
      */
-    public function index()
-    {
-        return FailedEvent::query()
-            ->select('id', 'routing_key', 'payload', 'error', 'attempts', 'created_at')
-            ->latest()
-            ->paginate(10);
+    public function index(Request $request)
+{
+    $query = FailedEvent::query();
+
+    if ($request->filled('search')) {
+        $query->where('routing_key', 'like', '%' . $request->search . '%');
     }
+
+    if ($request->filled('retries')) {
+        if ($request->retries === '3') {
+            $query->where('attempts', '>=', 3);
+        } elseif ($request->retries === '5') {
+            $query->where('attempts', '>=', 5);
+        }
+    }
+
+    return response()->json(
+        $query->orderByDesc('created_at')->paginate(10)
+    );
+}
+
+
 
     /**
      * Status em tempo real para os Cards do Painel
      */
-  public function stats()
-{
-    $total = FailedEvent::count();
+    public function stats()
+    {
+        $total = FailedEvent::count();
 
-    return response()->json([
-        'total'   => $total, // Para o Card DLQ
-        'today'   => FailedEvent::whereDate('created_at', Carbon::today())->count(), // Para o Card Hoje
-        'status'  => [
-            'total_retries' => (int) FailedEvent::sum('attempts'), // Para o Card Retries
-        ]
-    ]);
-}
+        return response()->json([
+            'total'   => $total, // Para o Card DLQ
+            'today'   => FailedEvent::whereDate('created_at', Carbon::today())->count(), // Para o Card Hoje
+            'status'  => [
+                'total_retries' => (int) FailedEvent::sum('attempts'), // Para o Card Retries
+            ]
+        ]);
+    }
 
 
     /**
@@ -71,7 +86,6 @@ class FailedEventController extends Controller
                     'attempts' => $event->attempts,
                     'message' => "Evento #{$id} enviado para a fila novamente."
                 ]);
-
             } catch (\Exception $e) {
                 return response()->json([
                     'status' => 'error',
