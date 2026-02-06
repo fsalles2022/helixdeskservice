@@ -90,7 +90,7 @@
 </head>
 
 <body>
-    <?php include resource_path('views/components/navbar.php'); ?>
+    <?php include resource_path('views/components/navbar.blade.php'); ?>
 
     <div id="loader" class="fixed inset-0 z-50 items-center justify-center">
         <div class="flex flex-col items-center">
@@ -136,7 +136,9 @@
             </div>
         </div>
 
-        <?php include resource_path('views/components/filters.php'); ?>
+        <x-charts />
+        
+        <?php include resource_path('views/components/filters.blade.php'); ?>
 
         <div class="overflow-hidden glass rounded-2xl">
             <table class="w-full text-left">
@@ -168,7 +170,7 @@
     </div>
 
     <script>
-const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
 const loader = document.getElementById('loader');
 const rows = document.getElementById('rows');
 
@@ -316,10 +318,10 @@ function refresh() {
 
 refresh();
 setInterval(refresh, 5000);
-</script>
+    </script>
 
 
-    <?php include resource_path('views/components/footer.php'); ?>
+    <?php include resource_path('views/components/footer.blade.php'); ?>
 
 </body>
 

@@ -20,4 +20,6 @@ Route::prefix('failed-events')->group(function () {
     Route::get('/stats', [FailedEventController::class, 'stats']);
     Route::post('/{id}/retry', [FailedEventController::class, 'retry']);
     Route::delete('/{id}', [FailedEventController::class, 'destroy']);
+
+    Route::get('/dlq/charts', [FailedEventController::class, 'charts']);
 });
