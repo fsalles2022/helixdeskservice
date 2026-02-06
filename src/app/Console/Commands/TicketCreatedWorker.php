@@ -73,11 +73,11 @@ class TicketCreatedWorker extends Command
                     $data = json_decode($msg->body, true);
 
                     // FORÇA ERRO (teste)
-                    // throw new \Exception("Simulated failure");
+                    throw new \Exception("Simulated failure");
                     // Exemplo de processamento real
-                    if (!isset($data['ticket_id'])) {
-                        throw new \Exception("Invalid payload");
-                    }
+                    //if (!isset($data['ticket_id'])) {
+                      //  throw new \Exception("Invalid payload");
+                    //}
 
                     $this->info("🎫 Ticket {$data['ticket_id']} processed successfully");
                 } catch (\Throwable $e) {
